@@ -2,7 +2,8 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os 
 import numpy as np 
-import seaborn as sns 
+import seaborn as sns
+import pandas as pd 
 import logging
 logger = tf.get_logger()
 logger.setLevel(logging.ERROR)
@@ -20,7 +21,6 @@ if not os.path.exists(os.path.join(home_dir, '.keras/datasets/cats_and_dogs_filt
                                       origin=link, 
                                       extract=True)
     basedir = os.path.join(os.path.dirname(zip_dir), 'cats_and_dogs_filtered')
-
 
 else:
     basedir = os.path.join(home_dir, '.keras/datasets/cats_and_dogs_filtered')
@@ -59,6 +59,7 @@ train_img = ImageDataGenerator(rescale=1.0/255)
 validate_img = ImageDataGenerator(rescale=1.0/255)
 
 # now do the preprocessing 
+# only need to shuffle the training data
 train_data_gen = train_img.flow_from_directory(batch_size=batch_size,
                                                directory=train_dir,
                                                shuffle=True,
@@ -67,7 +68,7 @@ train_data_gen = train_img.flow_from_directory(batch_size=batch_size,
 
 val_data_gen = validate_img.flow_from_directory(batch_size=batch_size,
                                                 directory=validate_dir,
-                                                shuffle=True,
+                                                shuffle=False,
                                                 target_size=img_shape,
                                                 class_mode='binary')
 
@@ -113,6 +114,8 @@ epochs = 100
 steps_per_epoch = int(np.ceil(np.ceil(total_train)/np.float(batch_size)))
 validation_steps = int(np.ceil(total_val/np.float(batch_size)))
 
+##### HIGHLY RECOMMEND YOU RUN ON GOOGLE CLOUD/COLAB
+##### VERY COMPUTATIONALLY HEAVY
 history = model.fit_generator(
     train_data_gen,
     steps_per_epoch=steps_per_epoch,
@@ -120,10 +123,3 @@ history = model.fit_generator(
     validation_data=val_data_gen,
     validation_steps=validation_steps
     )
-
-
-
-
-
-
-
