@@ -1,6 +1,4 @@
 tensorflow==2.0.0
 tensorflow_datasets
-pandas
 numpy
 seaborn
-opencv-python
