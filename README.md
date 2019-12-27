@@ -15,4 +15,4 @@ source env_python/bin/activate
 pip install -r requirements.txt
 ```
 
-Then run `python cat_or_dog.py`
+Then run `python dog_or_cat.py`
